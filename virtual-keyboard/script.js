@@ -1,0 +1,188 @@
+/* global document */
+const mainSection = document.createElement('section');
+mainSection.className = 'mainSection';
+const mainTitle = document.createElement('h1');
+mainTitle.innerHTML = 'RSS Виртуальная клавиатура';
+const mainTextarea = document.createElement('textarea');
+mainTextarea.rows = 5;
+mainTextarea.cols = 50;
+document.body.append(mainSection);
+mainSection.append(mainTitle);
+mainSection.append(mainTextarea);
+
+class Keyboard {
+  constructor() {
+    this.keyboardContainer = null;
+    this.keys = [];
+
+    this.caps = 0;
+
+    this.keysLayout = [
+      'ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '+', 'Backspace',
+      'Tab', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', '\\', 'Del',
+      'CapsLock', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', 'Enter',
+      'Shift', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', '.', '▲', 'shift',
+      'Ctrl', 'Win', 'Alt', 'Space', 'Alt', '◄', '▼', '►', 'ctrl',
+    ];
+    this.keysUp = [
+      'Ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '+', 'Backspace',
+      'Tab', 'Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З', 'Х', 'Ъ', '\\', 'Del',
+      'CapsLock', 'Ф', 'Ы', 'В', 'А', 'П', 'Р', 'О', 'Л', 'Д', 'Ж', 'Э', 'Enter',
+      'Shift', 'Я', 'Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б', 'Ю', '.', '▲', 'shift',
+      'Ctrl', 'Win', 'Alt', 'Space', 'Alt', '◄', '▼', '►', 'ctrl',
+    ];
+    this.keysEng = [
+      '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '+', 'Backspace',
+      'Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\', 'Del',
+      'CapsLock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'Enter',
+      'Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '▲', 'shift',
+      'Ctrl', 'Win', 'Alt', 'Space', 'Alt', '◄', '▼', '►', 'ctrl',
+    ];
+    this.keysEngUp = [
+      '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '+', 'Backspace',
+      'Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', 'Del',
+      'CapsLock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '\'', 'Enter',
+      'Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', '▲', 'shift',
+      'Ctrl', 'Win', 'Alt', 'Space', 'Alt', '◄', '▼', '►', 'ctrl',
+    ];
+    this.keysCode = [
+      'Backquote', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9', 'Digit0', 'Minus', 'Equal', 'Backspace',
+      'Tab', 'KeyQ', 'KeyW', 'KeyE', 'KeyR', 'KeyT', 'KeyY', 'KeyU', 'KeyI', 'KeyO', 'KeyP', 'BracketLeft', 'BracketRight', 'Backslash', 'Delete',
+      'CapsLock', 'KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyG', 'KeyH', 'KeyJ', 'KeyK', 'KeyL', 'Semicolon', 'Quote', 'Enter',
+      'ShiftLeft', 'KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash', 'ArrowUp', 'ShiftRight',
+      'ControlLeft', 'MetaLeft', 'AltLeft', 'Space', 'AltRight', 'ArrowLeft', 'ArrowDown', 'ArrowRight', 'ControlRight',
+    ];
+  }
+
+  init() {
+    this.keyboardContainer = document.createElement('div');
+
+    this.keyboardContainer.classList.add('keyboard');
+
+    mainSection.append(this.keyboardContainer);
+  }
+
+  createKeys() {
+    this.keysLayout.forEach((key) => {
+      if (key === 'Backspace') {
+        this.keyboardContainer.insertAdjacentHTML('beforeend', `<div class='keyboard__key backspace'>${key}</div><br>`);
+      } else if (key === 'Tab') {
+        this.keyboardContainer.insertAdjacentHTML('beforeend', `<div class='keyboard__key tab'>${key}</div>`);
+      } else if (key === 'Del') {
+        this.keyboardContainer.insertAdjacentHTML('beforeend', `<div class='keyboard__key del'>${key}</div>`);
+      } else if (key === 'CapsLock') {
+        this.keyboardContainer.insertAdjacentHTML('beforeend', `<div class='keyboard__key backspace'>${key}</div>`);
+      } else if (key === 'Enter') {
+        this.keyboardContainer.insertAdjacentHTML('beforeend', `<div class='keyboard__key enter'>${key}</div>`);
+      } else if (key === 'Shift') {
+        this.keyboardContainer.insertAdjacentHTML('beforeend', `<div class='keyboard__key backspace'>${key}</div>`);
+      } else if (key === 'shift') {
+        this.keyboardContainer.insertAdjacentHTML('beforeend', `<div class='keyboard__key enter'>${key}</div>`);
+      } else if (key === 'Space') {
+        this.keyboardContainer.insertAdjacentHTML('beforeend', `<div class='keyboard__key space'>${key}</div>`);
+      } else {
+        this.keyboardContainer.insertAdjacentHTML('beforeend', `<div class='keyboard__key'>${key}</div>`);
+      }
+    });
+    this.keys = document.querySelectorAll('.keyboard__key');
+    this.keys.forEach((keysEl, ind) => keysEl.setAttribute('data-key', `${this.keysCode[ind]}`));
+    this.keys.forEach((el) => el.addEventListener('click', (event) => {
+      mainTextarea.setAttribute('autofocus', '');
+      console.log(mainTextarea.hasAttribute('autofocus'));
+      this.keys.forEach((key) => key.classList.remove('active'));
+      event.target.classList.add('active');
+      if (event.target.innerHTML === 'Space') {
+        mainTextarea.innerHTML += ' ';
+      } else if (event.target.innerHTML === 'CapsLock') {
+        mainTextarea.innerHTML += '';
+      } else {
+        mainTextarea.innerHTML += event.target.innerHTML;
+      }
+      console.log(event.target.innerHTML);
+      if (event.target.innerHTML === 'Space') {
+        console.log('here will be space');
+      }
+      if (event.target.innerHTML === 'CapsLock') {
+        this.keys.forEach((val, i) => {
+          const whatKey = val;
+          whatKey.innerHTML = this.keysUp[i];
+        });
+      }
+    }));
+  }
+
+  keyDownEvent(event) {
+    this.keysEngUp = [
+      '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '+', 'Backspace',
+      'Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', 'Del',
+      'CapsLock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '\'', 'Enter',
+      'Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', '▲', 'shift',
+      'Ctrl', 'Win', 'Alt', 'Space', 'Alt', '◄', '▼', '►', 'ctrl',
+    ];
+    this.keysEng = [
+      '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '+', 'Backspace',
+      'Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\', 'Del',
+      'CapsLock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'Enter',
+      'Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '▲', 'shift',
+      'Ctrl', 'Win', 'Alt', 'Space', 'Alt', '◄', '▼', '►', 'ctrl',
+    ];
+    this.keysLayout = [
+      'ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '+', 'Backspace',
+      'Tab', 'й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', '\\', 'Del',
+      'CapsLock', 'ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', 'Enter',
+      'Shift', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', '.', '▲', 'shift',
+      'Ctrl', 'Win', 'Alt', 'Space', 'Alt', '◄', '▼', '►', 'ctrl',
+    ];
+    this.keysUp = [
+      'Ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '+', 'Backspace',
+      'Tab', 'Й', 'Ц', 'У', 'К', 'Е', 'Н', 'Г', 'Ш', 'Щ', 'З', 'Х', 'Ъ', '\\', 'Del',
+      'CapsLock', 'Ф', 'Ы', 'В', 'А', 'П', 'Р', 'О', 'Л', 'Д', 'Ж', 'Э', 'Enter',
+      'Shift', 'Я', 'Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б', 'Ю', '.', '▲', 'shift',
+      'Ctrl', 'Win', 'Alt', 'Space', 'Alt', '◄', '▼', '►', 'ctrl',
+    ];
+    let capsStatus = 0;
+    this.keys = document.querySelectorAll('.keyboard__key');
+    this.keys.forEach((el) => el.classList.remove('active'));
+    this.keys.forEach((el) => el.classList.remove('anime'));
+    this.keys.forEach((a, i) => {
+      const element = a.dataset.key;
+      if (element === event.code) {
+        if (event.code === 'Space') {
+          mainTextarea.innerHTML += ' ';
+        } else if (event.code === 'CapsLock') {
+          if (capsStatus === 0) {
+            this.keys.forEach((val, index) => {
+              capsStatus = 1;
+              const whatKey = val;
+              whatKey.innerHTML = this.keysUp[index];
+            });
+          } else {
+            this.keys.forEach((val, index) => {
+              const whatKey = val;
+              whatKey.innerHTML = this.keysLayout[index];
+              capsStatus = 0;
+            });
+          }
+        } else {
+          mainTextarea.innerHTML += this.keys[i].innerHTML;
+          a.classList.add('active');
+          a.classList.add('anime');
+        }
+      }
+    });
+    console.log(`code: ${event.code}`);
+    console.log(`key: ${event.key}`);
+  }
+
+  keyUpEvent(event) {
+    this.keys = document.querySelectorAll('.keyboard__key');
+    this.keys.forEach((el) => el.classList.remove('active'));
+    this.keys.forEach((el) => el.classList.remove('anime'));
+  }
+}
+
+const keyboard = new Keyboard();
+keyboard.init();
+keyboard.createKeys();
+document.addEventListener('keydown', keyboard.keyDownEvent);
+document.addEventListener('keyup', keyboard.keyUpEvent);
