@@ -6,9 +6,15 @@ mainTitle.innerHTML = 'RSS Виртуальная клавиатура';
 const mainTextarea = document.createElement('textarea');
 mainTextarea.rows = 5;
 mainTextarea.cols = 50;
+const paragraph1 = document.createElement('p');
+paragraph1.innerHTML = 'Клавиатура создана в операционной системе Windows';
+const paragraph2 = document.createElement('p');
+paragraph2.innerHTML = 'Для переключения языка комбинация: левыe ctrl + Shift';
 document.body.append(mainSection);
 mainSection.append(mainTitle);
 mainSection.append(mainTextarea);
+mainSection.append(paragraph1);
+mainSection.append(paragraph2);
 
 class Keyboard {
   constructor() {
@@ -108,15 +114,14 @@ class Keyboard {
       } else if (event.target.innerHTML === 'ctrl') {
         mainTextarea.innerHTML += '';
       } else if (event.target.innerHTML === 'Enter') {
-        mainTextarea.innerHTML += `\n`;
+        mainTextarea.innerHTML += '\n';
       } else if (event.target.innerHTML === 'Backspace') {
         mainTextarea.innerHTML = mainTextarea.innerHTML.slice(0, -1);
       } else if (event.target.innerHTML === 'Del') {
         mainTextarea.innerHTML = mainTextarea.innerHTML.slice(0, -1);
-      }else {
+      } else {
         mainTextarea.innerHTML += event.target.innerHTML;
       }
-      console.log(event.target.innerHTML);
       if (event.target.innerHTML === 'CapsLock') {
         if (this.caps === 0) {
           this.keys.forEach((val, index) => {
@@ -176,36 +181,91 @@ class Keyboard {
           a.classList.add('anime');
         } else if (event.code === 'CapsLock') {
           if (this.caps === 0) {
-            this.keys.forEach((val, index) => {
-              this.caps = 1;
-              const whatKey = val;
-              whatKey.innerHTML = this.keysUp[index];
+            this.keys.forEach((val) => {
+              if (
+                val.innerHTML !== 'Tab' && val.innerHTML !== 'CapsLock' && val.innerHTML !== 'Shift' && val.innerHTML !== 'Ctrl'
+                && val.innerHTML !== 'Space' && val.innerHTML !== 'Win' && val.innerHTML !== 'Alt' && val.innerHTML !== 'Enter'
+                && val.innerHTML !== 'Backspace' && val.innerHTML !== 'Del' && val.innerHTML !== 'shift' && val.innerHTML !== 'ctrl'
+              ) {
+                const calUp = val.innerHTML;
+                calUp.innerHTML.toUpperCase();
+                a.classList.add('active');
+                a.classList.add('anime');
+              }
             });
+            this.caps = 1;
           } else {
-            this.keys.forEach((val, index) => {
-              const whatKey = val;
-              whatKey.innerHTML = this.keysLayout[index];
-              this.caps = 0;
+            this.keys.forEach((val) => {
+              if (
+                val.innerHTML !== 'Tab' && val.innerHTML !== 'CapsLock' && val.innerHTML !== 'Shift' && val.innerHTML !== 'Ctrl'
+                && val.innerHTML !== 'Space' && val.innerHTML !== 'Win' && val.innerHTML !== 'Alt' && val.innerHTML !== 'Enter'
+                && val.innerHTML !== 'Backspace' && val.innerHTML !== 'Del' && val.innerHTML !== 'shift' && val.innerHTML !== 'ctrl'
+              ) {
+                const calUp = val.innerHTML;
+                calUp.innerHTML.toLowerCase();
+                a.classList.add('active');
+                a.classList.add('anime');
+              }
             });
+            this.caps = 0;
           }
         } else if (event.code === 'Backspace') {
           mainTextarea.innerHTML = mainTextarea.innerHTML.slice(0, -1);
-        }else if (event.code === 'Delete') {
+          a.classList.add('active');
+          a.classList.add('anime');
+        } else if (event.code === 'Delete') {
           mainTextarea.innerHTML = mainTextarea.innerHTML.slice(0, -1);
+          a.classList.add('active');
+          a.classList.add('anime');
         } else if (event.code === 'MetaLeft') {
-          mainTextarea.innerHTML = '';
-        }else {
+          mainTextarea.innerHTML += '';
+          a.classList.add('active');
+          a.classList.add('anime');
+        } else if (event.code === 'Tab') {
+          mainTextarea.innerHTML += '  ';
+          a.classList.add('active');
+          a.classList.add('anime');
+        } else if (event.code === 'Enter') {
+          mainTextarea.innerHTML += '\n';
+          a.classList.add('active');
+          a.classList.add('anime');
+        } else if (event.code === 'AltLeft') {
+          mainTextarea.innerHTML += '';
+          a.classList.add('active');
+          a.classList.add('anime');
+        } else if (event.code === 'ControlLeft') {
+          mainTextarea.innerHTML += '';
+          a.classList.add('active');
+          a.classList.add('anime');
+          if (this.lang === false) { this.lang = true; } else { this.lang = false; }
+        } else if (event.code === 'ShiftLeft') {
+          mainTextarea.innerHTML += '';
+          a.classList.add('active');
+          a.classList.add('anime');
+          if (this.lang === true) {
+            this.keys.forEach((val, index) => {
+              this.caps = 1;
+              const whatKey = val;
+              whatKey.innerHTML = this.keysEng[index];
+            });
+          }
+          if (this.lang === false) {
+            this.keys.forEach((val, index) => {
+              this.caps = 1;
+              const whatKey = val;
+              whatKey.innerHTML = this.keysLayout[index];
+            });
+          }
+        } else {
           mainTextarea.innerHTML += this.keys[i].innerHTML;
           a.classList.add('active');
           a.classList.add('anime');
         }
       }
     });
-    console.log(`code: ${event.code}`);
-    console.log(`key: ${event.key}`);
   }
 
-  keyUpEvent(event) {
+  keyUpEvent() {
     this.keys = document.querySelectorAll('.keyboard__key');
     this.keys.forEach((el) => el.classList.remove('active'));
     this.keys.forEach((el) => el.classList.remove('anime'));
