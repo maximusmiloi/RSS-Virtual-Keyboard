@@ -6,9 +6,15 @@ mainTitle.innerHTML = 'RSS Виртуальная клавиатура';
 const mainTextarea = document.createElement('textarea');
 mainTextarea.rows = 5;
 mainTextarea.cols = 50;
+const paragraph1 = document.createElement('p');
+paragraph1.innerHTML = 'Клавиатура создана в операционной системе Windows';
+const paragraph2 = document.createElement('p');
+paragraph2.innerHTML = 'Для переключения языка комбинация: левыe ctrl + Shift';
 document.body.append(mainSection);
 mainSection.append(mainTitle);
 mainSection.append(mainTextarea);
+mainSection.append(paragraph1);
+mainSection.append(paragraph2);
 
 class Keyboard {
   constructor() {
@@ -16,6 +22,7 @@ class Keyboard {
     this.keys = [];
 
     this.caps = 0;
+    this.lang = false;
 
     this.keysLayout = [
       'ё', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '+', 'Backspace',
@@ -88,25 +95,47 @@ class Keyboard {
     this.keys.forEach((keysEl, ind) => keysEl.setAttribute('data-key', `${this.keysCode[ind]}`));
     this.keys.forEach((el) => el.addEventListener('click', (event) => {
       mainTextarea.setAttribute('autofocus', '');
-      console.log(mainTextarea.hasAttribute('autofocus'));
       this.keys.forEach((key) => key.classList.remove('active'));
       event.target.classList.add('active');
       if (event.target.innerHTML === 'Space') {
         mainTextarea.innerHTML += ' ';
       } else if (event.target.innerHTML === 'CapsLock') {
         mainTextarea.innerHTML += '';
+      } else if (event.target.innerHTML === 'Shift') {
+        mainTextarea.innerHTML += '';
+      } else if (event.target.innerHTML === 'Ctrl') {
+        mainTextarea.innerHTML += '';
+      } else if (event.target.innerHTML === 'Alt') {
+        mainTextarea.innerHTML += '';
+      } else if (event.target.innerHTML === 'Win') {
+        mainTextarea.innerHTML += '';
+      } else if (event.target.innerHTML === 'shift') {
+        mainTextarea.innerHTML += '';
+      } else if (event.target.innerHTML === 'ctrl') {
+        mainTextarea.innerHTML += '';
+      } else if (event.target.innerHTML === 'Enter') {
+        mainTextarea.innerHTML += '\n';
+      } else if (event.target.innerHTML === 'Backspace') {
+        mainTextarea.innerHTML = mainTextarea.innerHTML.slice(0, -1);
+      } else if (event.target.innerHTML === 'Del') {
+        mainTextarea.innerHTML = mainTextarea.innerHTML.slice(0, -1);
       } else {
         mainTextarea.innerHTML += event.target.innerHTML;
       }
-      console.log(event.target.innerHTML);
-      if (event.target.innerHTML === 'Space') {
-        console.log('here will be space');
-      }
       if (event.target.innerHTML === 'CapsLock') {
-        this.keys.forEach((val, i) => {
-          const whatKey = val;
-          whatKey.innerHTML = this.keysUp[i];
-        });
+        if (this.caps === 0) {
+          this.keys.forEach((val, index) => {
+            this.caps = 1;
+            const whatKey = val;
+            whatKey.innerHTML = this.keysUp[index];
+          });
+        } else {
+          this.keys.forEach((val, index) => {
+            const whatKey = val;
+            whatKey.innerHTML = this.keysLayout[index];
+            this.caps = 0;
+          });
+        }
       }
     }));
   }
@@ -140,7 +169,6 @@ class Keyboard {
       'Shift', 'Я', 'Ч', 'С', 'М', 'И', 'Т', 'Ь', 'Б', 'Ю', '.', '▲', 'shift',
       'Ctrl', 'Win', 'Alt', 'Space', 'Alt', '◄', '▼', '►', 'ctrl',
     ];
-    let capsStatus = 0;
     this.keys = document.querySelectorAll('.keyboard__key');
     this.keys.forEach((el) => el.classList.remove('active'));
     this.keys.forEach((el) => el.classList.remove('anime'));
@@ -149,18 +177,83 @@ class Keyboard {
       if (element === event.code) {
         if (event.code === 'Space') {
           mainTextarea.innerHTML += ' ';
+          a.classList.add('active');
+          a.classList.add('anime');
         } else if (event.code === 'CapsLock') {
-          if (capsStatus === 0) {
-            this.keys.forEach((val, index) => {
-              capsStatus = 1;
-              const whatKey = val;
-              whatKey.innerHTML = this.keysUp[index];
+          if (this.caps === 0) {
+            this.keys.forEach((val) => {
+              if (
+                val.innerHTML !== 'Tab' && val.innerHTML !== 'CapsLock' && val.innerHTML !== 'Shift' && val.innerHTML !== 'Ctrl'
+                && val.innerHTML !== 'Space' && val.innerHTML !== 'Win' && val.innerHTML !== 'Alt' && val.innerHTML !== 'Enter'
+                && val.innerHTML !== 'Backspace' && val.innerHTML !== 'Del' && val.innerHTML !== 'shift' && val.innerHTML !== 'ctrl'
+              ) {
+                const calUp = val.innerHTML;
+                calUp.innerHTML.toUpperCase();
+                a.classList.add('active');
+                a.classList.add('anime');
+              }
             });
+            this.caps = 1;
           } else {
+            this.keys.forEach((val) => {
+              if (
+                val.innerHTML !== 'Tab' && val.innerHTML !== 'CapsLock' && val.innerHTML !== 'Shift' && val.innerHTML !== 'Ctrl'
+                && val.innerHTML !== 'Space' && val.innerHTML !== 'Win' && val.innerHTML !== 'Alt' && val.innerHTML !== 'Enter'
+                && val.innerHTML !== 'Backspace' && val.innerHTML !== 'Del' && val.innerHTML !== 'shift' && val.innerHTML !== 'ctrl'
+              ) {
+                const calUp = val.innerHTML;
+                calUp.innerHTML.toLowerCase();
+                a.classList.add('active');
+                a.classList.add('anime');
+              }
+            });
+            this.caps = 0;
+          }
+        } else if (event.code === 'Backspace') {
+          mainTextarea.innerHTML = mainTextarea.innerHTML.slice(0, -1);
+          a.classList.add('active');
+          a.classList.add('anime');
+        } else if (event.code === 'Delete') {
+          mainTextarea.innerHTML = mainTextarea.innerHTML.slice(0, -1);
+          a.classList.add('active');
+          a.classList.add('anime');
+        } else if (event.code === 'MetaLeft') {
+          mainTextarea.innerHTML += '';
+          a.classList.add('active');
+          a.classList.add('anime');
+        } else if (event.code === 'Tab') {
+          mainTextarea.innerHTML += '  ';
+          a.classList.add('active');
+          a.classList.add('anime');
+        } else if (event.code === 'Enter') {
+          mainTextarea.innerHTML += '\n';
+          a.classList.add('active');
+          a.classList.add('anime');
+        } else if (event.code === 'AltLeft') {
+          mainTextarea.innerHTML += '';
+          a.classList.add('active');
+          a.classList.add('anime');
+        } else if (event.code === 'ControlLeft') {
+          mainTextarea.innerHTML += '';
+          a.classList.add('active');
+          a.classList.add('anime');
+          if (this.lang === false) { this.lang = true; } else { this.lang = false; }
+        } else if (event.code === 'ShiftLeft') {
+          mainTextarea.innerHTML += '';
+          a.classList.add('active');
+          a.classList.add('anime');
+          if (this.lang === true) {
             this.keys.forEach((val, index) => {
+              this.caps = 1;
+              const whatKey = val;
+              whatKey.innerHTML = this.keysEng[index];
+            });
+          }
+          if (this.lang === false) {
+            this.keys.forEach((val, index) => {
+              this.caps = 1;
               const whatKey = val;
               whatKey.innerHTML = this.keysLayout[index];
-              capsStatus = 0;
             });
           }
         } else {
@@ -170,11 +263,9 @@ class Keyboard {
         }
       }
     });
-    console.log(`code: ${event.code}`);
-    console.log(`key: ${event.key}`);
   }
 
-  keyUpEvent(event) {
+  keyUpEvent() {
     this.keys = document.querySelectorAll('.keyboard__key');
     this.keys.forEach((el) => el.classList.remove('active'));
     this.keys.forEach((el) => el.classList.remove('anime'));
