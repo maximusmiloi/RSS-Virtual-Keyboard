@@ -124,16 +124,32 @@ class Keyboard {
       }
       if (event.target.innerHTML === 'CapsLock') {
         if (this.caps === 0) {
-          this.keys.forEach((val, index) => {
-            this.caps = 1;
-            const whatKey = val;
-            whatKey.innerHTML = this.keysUp[index];
+          this.keys.forEach((val) => {
+            if (
+              val.innerHTML !== 'Tab' && val.innerHTML !== 'CapsLock' && val.innerHTML !== 'Shift' && val.innerHTML !== 'Ctrl'
+              && val.innerHTML !== 'Space' && val.innerHTML !== 'Win' && val.innerHTML !== 'Alt' && val.innerHTML !== 'Enter'
+              && val.innerHTML !== 'Backspace' && val.innerHTML !== 'Del' && val.innerHTML !== 'shift' && val.innerHTML !== 'ctrl'
+            ) {
+              /* eslint-disable no-param-reassign */
+              val.innerHTML = val.innerHTML.toUpperCase();
+              /* eslint-enable no-param-reassign */
+              event.target.classList.add('active');
+              this.caps = undefined;
+            }
           });
         } else {
-          this.keys.forEach((val, index) => {
-            const whatKey = val;
-            whatKey.innerHTML = this.keysLayout[index];
-            this.caps = 0;
+          this.keys.forEach((val) => {
+            if (
+              val.innerHTML !== 'Tab' && val.innerHTML !== 'CapsLock' && val.innerHTML !== 'Shift' && val.innerHTML !== 'Ctrl'
+              && val.innerHTML !== 'Space' && val.innerHTML !== 'Win' && val.innerHTML !== 'Alt' && val.innerHTML !== 'Enter'
+              && val.innerHTML !== 'Backspace' && val.innerHTML !== 'Del' && val.innerHTML !== 'shift' && val.innerHTML !== 'ctrl'
+            ) {
+              /* eslint-disable no-param-reassign */
+              val.innerHTML = val.innerHTML.toLowerCase();
+              /* eslint-enable no-param-reassign */
+              event.target.classList.add('active');
+              this.caps = 0;
+            }
           });
         }
       }
@@ -180,20 +196,21 @@ class Keyboard {
           a.classList.add('active');
           a.classList.add('anime');
         } else if (event.code === 'CapsLock') {
-          if (this.caps === 0) {
+          if (this.caps === undefined) {
             this.keys.forEach((val) => {
               if (
                 val.innerHTML !== 'Tab' && val.innerHTML !== 'CapsLock' && val.innerHTML !== 'Shift' && val.innerHTML !== 'Ctrl'
                 && val.innerHTML !== 'Space' && val.innerHTML !== 'Win' && val.innerHTML !== 'Alt' && val.innerHTML !== 'Enter'
                 && val.innerHTML !== 'Backspace' && val.innerHTML !== 'Del' && val.innerHTML !== 'shift' && val.innerHTML !== 'ctrl'
               ) {
-                const calUp = val.innerHTML;
-                calUp.innerHTML.toUpperCase();
                 a.classList.add('active');
                 a.classList.add('anime');
+                /* eslint-disable no-param-reassign */
+                val.innerHTML = val.innerHTML.toUpperCase();
+                /* eslint-enable no-param-reassign */
+                this.caps = 0;
               }
             });
-            this.caps = 1;
           } else {
             this.keys.forEach((val) => {
               if (
@@ -201,13 +218,14 @@ class Keyboard {
                 && val.innerHTML !== 'Space' && val.innerHTML !== 'Win' && val.innerHTML !== 'Alt' && val.innerHTML !== 'Enter'
                 && val.innerHTML !== 'Backspace' && val.innerHTML !== 'Del' && val.innerHTML !== 'shift' && val.innerHTML !== 'ctrl'
               ) {
-                const calUp = val.innerHTML;
-                calUp.innerHTML.toLowerCase();
+                /* eslint-disable no-param-reassign */
+                val.innerHTML = val.innerHTML.toLowerCase();
+                /* eslint-enable no-param-reassign */
                 a.classList.add('active');
                 a.classList.add('anime');
+                this.caps = undefined;
               }
             });
-            this.caps = 0;
           }
         } else if (event.code === 'Backspace') {
           mainTextarea.innerHTML = mainTextarea.innerHTML.slice(0, -1);
