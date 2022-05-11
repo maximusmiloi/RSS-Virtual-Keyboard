@@ -94,33 +94,57 @@ class Keyboard {
     this.keys = document.querySelectorAll('.keyboard__key');
     this.keys.forEach((keysEl, ind) => keysEl.setAttribute('data-key', `${this.keysCode[ind]}`));
     this.keys.forEach((el) => el.addEventListener('click', (event) => {
-      mainTextarea.setAttribute('autofocus', '');
       this.keys.forEach((key) => key.classList.remove('active'));
+      this.keys.forEach((key) => key.classList.remove('anime'));
       event.target.classList.add('active');
       if (event.target.innerHTML === 'Space') {
         mainTextarea.innerHTML += ' ';
+        el.classList.add('active');
+        el.classList.add('anime');
       } else if (event.target.innerHTML === 'CapsLock') {
         mainTextarea.innerHTML += '';
       } else if (event.target.innerHTML === 'Shift') {
         mainTextarea.innerHTML += '';
+        el.classList.add('active');
+        el.classList.add('anime');
+      } else if (event.target.innerHTML === 'Tab') {
+        mainTextarea.innerHTML += '  ';
+        el.classList.add('active');
+        el.classList.add('anime');
       } else if (event.target.innerHTML === 'Ctrl') {
         mainTextarea.innerHTML += '';
+        el.classList.add('active');
+        el.classList.add('anime');
       } else if (event.target.innerHTML === 'Alt') {
         mainTextarea.innerHTML += '';
+        el.classList.add('active');
+        el.classList.add('anime');
       } else if (event.target.innerHTML === 'Win') {
         mainTextarea.innerHTML += '';
       } else if (event.target.innerHTML === 'shift') {
         mainTextarea.innerHTML += '';
+        el.classList.add('active');
+        el.classList.add('anime');
       } else if (event.target.innerHTML === 'ctrl') {
         mainTextarea.innerHTML += '';
+        el.classList.add('active');
+        el.classList.add('anime');
       } else if (event.target.innerHTML === 'Enter') {
         mainTextarea.innerHTML += '\n';
+        el.classList.add('active');
+        el.classList.add('anime');
       } else if (event.target.innerHTML === 'Backspace') {
         mainTextarea.innerHTML = mainTextarea.innerHTML.slice(0, -1);
+        el.classList.add('active');
+        el.classList.add('anime');
       } else if (event.target.innerHTML === 'Del') {
         mainTextarea.innerHTML = mainTextarea.innerHTML.slice(0, -1);
+        el.classList.add('active');
+        el.classList.add('anime');
       } else {
         mainTextarea.innerHTML += event.target.innerHTML;
+        el.classList.add('active');
+        el.classList.add('anime');
       }
       if (event.target.innerHTML === 'CapsLock') {
         if (this.caps === 0) {
@@ -157,6 +181,7 @@ class Keyboard {
   }
 
   keyDownEvent(event) {
+    event.preventDefault();
     this.keysEngUp = [
       '`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '+', 'Backspace',
       'Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\', 'Del',
